@@ -18,12 +18,6 @@ export const getContactByIdController = async (req, res) => {
   const id = req.params.contactId;
   const contact = await getContactById(id);
 
-  if (!contact) {
-    return res.status(404).json({
-      status: 404,
-      message: `Contact with id ${id} not found!`,
-    });
-  }
   res.json({
     status: 200,
     message: `Successfully found contact with id ${id}!`,
