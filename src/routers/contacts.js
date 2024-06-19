@@ -12,28 +12,28 @@ import { createContactSchema } from '../validation/createContactSchema.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { updateContactSchema } from '../validation/updateContactSchema.js';
 import { validateMongoId } from '../middlewares/validateMongodbId.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { checkChildPermissions } from '../middlewares/checkPoles.js';
 
 const contactsRouter = Router();
-contactsRouter.use('/contacts/:contactId', validateMongoId('contactId'));
-contactsRouter.get('/contacts', ctrlWrapper(getContactsController));
+contactsRouter.use('/:contactId', validateMongoId('contactId'));
+contactsRouter.use('/', authenticate);
 
-contactsRouter.get(
-  '/contacts/:contactId',
-  ctrlWrapper(getContactByIdController),
-);
+contactsRouter.get('/', ctrlWrapper(getContactsController));
+
+contactsRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
+
 contactsRouter.post(
-  '/contacts',
+  '/',
   validateBody(createContactSchema),
   ctrlWrapper(createContactsController),
 );
 
 contactsRouter.patch(
-  '/contacts/:contactId',
+  '/:contactId',
+  checkChildPermissions('teacher', 'parent'),
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
-contactsRouter.delete(
-  '/contacts/:contactId',
-  ctrlWrapper(deleteContactByIdController),
-);
+contactsRouter.delete('/:contactId', ctrlWrapper(deleteContactByIdController));
 export default contactsRouter;
