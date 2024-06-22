@@ -21,7 +21,7 @@ authRouter.post(
   validateBody(loginUserSchema),
   ctrlWrapper(loginUserController),
 );
-authRouter.post('/refres-token', ctrlWrapper(refresUserController));
+authRouter.post('/refresh', ctrlWrapper(refresUserController));
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
 export default authRouter;
