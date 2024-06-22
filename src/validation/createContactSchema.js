@@ -11,17 +11,5 @@ export const createContactSchema = Joi.object({
     .max(20)
     .valid('home', 'personal', 'work')
     .default('personal'),
+  //userId: Joi.string().required(),
 });
-
-// name: { type: String, required: true },
-//     phoneNumber: { type: String, required: true },
-//     email: { type: String, required: true },
-//     isFavourite: { type: Boolean, default: false },
-//     contactType: {
-//       type: String,
-//       required: true,
-//       enum: ['home', 'personal', 'work'],
-//       default: 'personal',
-//     },
-//   },
-//   { timestamps: true, versionKey: false },

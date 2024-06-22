@@ -6,7 +6,8 @@ import { ENV_VARS } from './constants/index.js';
 
 import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
-import contactsRouter from './routers/contacts.js';
+import rootRouter from './routers/index.js';
+import cookieParser from 'cookie-parser';
 
 const PORT = env(ENV_VARS.PORT, 3000);
 
@@ -22,9 +23,10 @@ export const setupServer = () => {
   );
 
   app.use(cors());
+  app.use(cookieParser());
   app.use(express.json());
 
-  app.use(contactsRouter);
+  app.use(rootRouter);
 
   app.use(notFoundMiddleware);
 
