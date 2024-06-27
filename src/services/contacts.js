@@ -1,6 +1,7 @@
 import { SORT_ORDER } from '../constants/index.js';
 import { Contact } from '../utils/db/models/contacts.js';
 import createHttpError from 'http-errors';
+import { saveFile } from '../utils/saveFile.js';
 
 const createPaginationInformation = (page, perPage, count) => {
   const totalPages = Math.ceil(count / perPage);
@@ -61,15 +62,26 @@ export const getContactById = async (id, userId) => {
 
   return contact;
 };
-export const createContact = async (payload, userId) => {
-  const contact = await Contact.create({ ...payload, userId: userId });
+export const createContact = async ({ photo, ...payload }, userId) => {
+  const url = await saveFile(photo);
+  const contact = await Contact.create({
+    ...payload,
+    userId: userId,
+    photo: url,
+  });
 
   return contact;
 };
-export const upsertContact = async (id, payload, options = {}, userId) => {
+export const upsertContact = async (
+  id,
+  { photo, ...payload },
+  options = {},
+  userId,
+) => {
+  const url = await saveFile(photo);
   const rawResult = await Contact.findOneAndUpdate(
     { _id: id, userId },
-    payload,
+    { ...payload, photo: url },
     {
       new: true,
       includeResultMetadata: true,
