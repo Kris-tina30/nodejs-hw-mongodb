@@ -17,15 +17,15 @@ import { checkChildPermissions } from '../middlewares/checkPoles.js';
 import { upload } from '../middlewares/upload.js';
 
 const contactsRouter = Router();
+
 contactsRouter.use('/:contactId', validateMongoId('contactId'));
 contactsRouter.use('/', authenticate);
-
-contactsRouter.get('/', ctrlWrapper(getContactsController));
+contactsRouter.get('', ctrlWrapper(getContactsController));
 
 contactsRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
 
 contactsRouter.post(
-  '/',
+  '',
   upload.single('photo'),
   validateBody(createContactSchema),
   ctrlWrapper(createContactsController),

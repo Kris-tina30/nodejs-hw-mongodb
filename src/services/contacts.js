@@ -26,18 +26,21 @@ export const getAllContacts = async ({
   userId,
 }) => {
   const skip = perPage * (page - 1);
-  const contactsFilters = Contact.find();
+
+  const contactsFilters = Contact.find({ userId });
+
   if (filter.type) {
     contactsFilters.where('contactType').equals(filter.tyxcpe);
   }
   if (filter.isFavourite) {
     contactsFilters.where('isFavourite').equals(filter.isFavourite);
   }
-  contactsFilters.where('parentId').equals(userId);
+  // contactsFilters.where('parentId').equals(userId);
+
   const [contactsCount, contacts] = await Promise.all([
-    Contact.find().merge(contactsFilters).countDocuments(),
-    Contact.find()
-      .merge(contactsFilters)
+    Contact.countDocuments(contactsFilters),
+    Contact.find(contactsFilters)
+
       .skip(skip)
       .limit(perPage)
       .sort({
@@ -66,7 +69,7 @@ export const createContact = async ({ photo, ...payload }, userId) => {
   const url = await saveFile(photo);
   const contact = await Contact.create({
     ...payload,
-    userId: userId,
+    userId,
     photo: url,
   });
 
