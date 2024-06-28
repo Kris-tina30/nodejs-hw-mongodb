@@ -57,7 +57,11 @@ export const createContactsController = async (req, res) => {
 export const patchContactController = async (req, res) => {
   const { body, file } = req;
   const { contactId } = req.params;
-  const { contact } = await upsertContact(contactId, { ...body, photo: file });
+  const { contact } = await upsertContact(
+    contactId,
+    { ...body, photo: file },
+    req.user._id,
+  );
   if (!contact) {
     return res.status(404).json({
       status: 404,
