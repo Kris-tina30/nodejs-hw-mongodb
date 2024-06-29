@@ -22,7 +22,7 @@ export const registerUserController = async (req, res) => {
   const user = await createUser(req.body);
 
   res.json({
-    status: 200,
+    status: 201,
     message: `Successfully created user!`,
     data: { user },
   });
