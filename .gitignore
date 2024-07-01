@@ -1,9 +1,11 @@
 /node_modules
+/upload
 
 .env
 
 .vscode
 .DS_Store
+/temp
 .idea
 # Logs
 logs
