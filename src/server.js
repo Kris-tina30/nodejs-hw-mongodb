@@ -8,12 +8,13 @@ import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
 import rootRouter from './routers/index.js';
 import cookieParser from 'cookie-parser';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 const PORT = env(ENV_VARS.PORT, 3000);
 
 export const setupServer = () => {
   const app = express();
-
+  app.use('/api-docs', swaggerDocs());
   app.use(
     pino({
       transport: {
